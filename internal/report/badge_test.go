@@ -24,10 +24,10 @@ func TestBadgeStyleAndGrades(t *testing.T) {
 	}
 }
 func TestBadgeAnalysisStateAndEscaping(t *testing.T) {
-	full := SVG(model.Result{Complete: true, Mode: "standard", Grade: "A+"})
-	basic := SVG(model.Result{Complete: true, Mode: "typed", Grade: "A+"})
-	if full == basic || !strings.Contains(basic, "python report (typed)") {
-		t.Fatal("basic mode must remain visibly distinct")
+	standard := SVG(model.Result{Complete: true, Mode: "standard", Grade: "A+"})
+	typed := SVG(model.Result{Complete: true, Mode: "typed", Grade: "A+"})
+	if standard == typed || !strings.Contains(typed, "python report (typed)") {
+		t.Fatal("typed mode must remain visibly distinct")
 	}
 	incomplete := SVG(model.Result{Mode: "standard", Grade: "A+"})
 	if strings.Contains(incomplete, ">A+<") || !strings.Contains(incomplete, "incomplete") || !strings.Contains(incomplete, "#9f9f9f") {
