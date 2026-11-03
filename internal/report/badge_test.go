@@ -26,11 +26,11 @@ func TestBadgeStyleAndGrades(t *testing.T) {
 func TestBadgeAnalysisStateAndEscaping(t *testing.T) {
 	standard := SVG(model.Result{Complete: true, Mode: "standard", Grade: "A+"})
 	typed := SVG(model.Result{Complete: true, Mode: "typed", Grade: "A+"})
-	if standard == typed || !strings.Contains(typed, "python report (typed)") {
+	if standard == typed || !strings.Contains(typed, "Python Report (Typed)") {
 		t.Fatal("typed mode must remain visibly distinct")
 	}
 	incomplete := SVG(model.Result{Mode: "standard", Grade: "A+"})
-	if strings.Contains(incomplete, ">A+<") || !strings.Contains(incomplete, "incomplete") || !strings.Contains(incomplete, "#9f9f9f") {
+	if strings.Contains(incomplete, ">A+<") || !strings.Contains(incomplete, "Incomplete") || !strings.Contains(incomplete, "#9f9f9f") {
 		t.Fatal("incomplete analysis must not show a grade")
 	}
 	var parsed any
