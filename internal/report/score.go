@@ -51,7 +51,7 @@ func Finalize(root string, r *model.Result, prior map[string]int) {
 					context = strings.Join(strings.Fields(lines[d.Line-1]), " ")
 				}
 			}
-			sum := sha256.Sum256([]byte(strings.Join([]string{d.Tool, d.Rule, d.Severity, d.Confidence, d.File, d.Message, context}, "\x00")))
+			sum := sha256.Sum256([]byte(strings.Join([]string{d.Tool, d.Rule, d.Severity, d.ToolSeverity, d.Confidence, d.File, d.Message, context}, "\x00")))
 			d.Fingerprint = fmt.Sprintf("%x", sum[:])
 			d.New = true
 			if prior[d.Fingerprint] > 0 {

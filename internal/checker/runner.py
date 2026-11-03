@@ -19,7 +19,7 @@ result = {"tool": name, "version": "", "status": "passed", "analyzed": 0,
           "python_version": ".".join(map(str, sys.version_info[:2]))}
 
 
-def finding(rule, severity, filename, line, column, message, confidence=""):
+def finding(rule, severity, filename, line, column, message, confidence="", tool_severity=""):
     path = Path(filename)
     if not path.is_absolute():
         path = root / path
@@ -30,7 +30,7 @@ def finding(rule, severity, filename, line, column, message, confidence=""):
     if relative not in files:
         return
     result["diagnostics"].append({"tool": name, "rule": rule, "severity": severity,
-        "confidence": confidence, "file": relative, "line": line, "column": column,
+        "confidence": confidence, "tool_severity": tool_severity, "file": relative, "line": line, "column": column,
         "message": message})
 
 
@@ -115,7 +115,7 @@ def security():
             confidence = item["issue_confidence"].lower()
             severity = "error" if item["issue_severity"] == "HIGH" and confidence == "high" else "warning"
             finding(item["test_id"], severity, item["filename"], item["line_number"],
-                    item.get("col_offset", 0) + 1, item["issue_text"], confidence)
+                    item.get("col_offset", 0) + 1, item["issue_text"], confidence, item["issue_severity"].lower())
         result["analyzed"] += len(batch)
 
 

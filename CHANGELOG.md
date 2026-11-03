@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+- Preserve original Bandit severity alongside normalized gate severity and confidence.
+
 ## 1.0.0
 
 - Add a Go CLI and Ubuntu Composite Action for Python quality reports.

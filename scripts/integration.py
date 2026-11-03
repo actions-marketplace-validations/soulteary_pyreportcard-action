@@ -50,7 +50,7 @@ with tempfile.TemporaryDirectory() as directory:
     assert source.read_text().endswith("value=1\n")
     source.write_text('"""Security fixture."""\n\nimport subprocess\n\ndef run(command: str) -> None:\n    subprocess.run(command, shell=True)\n')
     report = check(1)
-    assert any(d["tool"] == "bandit" and d["severity"] == "error"
+    assert any(d["tool"] == "bandit" and d["severity"] == "error" and d["tool_severity"] == "high"
                for c in report["checks"] for d in c["diagnostics"]), report
     source.write_text('"""Complexity fixture."""\n\ndef work(x: int) -> int:\n' +
                       ''.join(f'    if x == {i}:\n        return {i}\n' for i in range(12)) + '    return -1\n')

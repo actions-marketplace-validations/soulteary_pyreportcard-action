@@ -53,7 +53,7 @@ func Markdown(r model.Result) string {
 		}
 		b.WriteString("| File | Line | Severity | Confidence | Rule | New | Message |\n| --- | --- | --- | --- | --- | --- | --- |\n")
 		for _, d := range c.Diagnostics {
-			fmt.Fprintf(&b, "| %s | %d | %s | %s | %s | %t | %s |\n", escape(d.File), d.Line, d.Severity, escape(d.Confidence), escape(d.Rule), d.New, escape(d.Message))
+			fmt.Fprintf(&b, "| %s | %d | %s | %s | %s | %t | %s |\n", escape(d.File), d.Line, diagnosticSeverity(d), escape(d.Confidence), escape(d.Rule), d.New, escape(d.Message))
 		}
 	}
 	return b.String()
@@ -75,4 +75,11 @@ func Write(dir string, r model.Result) error {
 		}
 	}
 	return nil
+}
+
+func diagnosticSeverity(d model.Diagnostic) string {
+	if d.ToolSeverity != "" {
+		return escape(d.Severity + " (" + d.ToolSeverity + ")")
+	}
+	return escape(d.Severity)
 }

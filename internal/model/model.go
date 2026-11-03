@@ -3,16 +3,17 @@ package model
 import "github.com/soulteary/pyreportcard-action/internal/config"
 
 type Diagnostic struct {
-	Tool        string `json:"tool"`
-	Rule        string `json:"rule"`
-	Severity    string `json:"severity"`
-	Confidence  string `json:"confidence,omitempty"`
-	File        string `json:"file"`
-	Line        int    `json:"line"`
-	Column      int    `json:"column"`
-	Message     string `json:"message"`
-	Fingerprint string `json:"fingerprint"`
-	New         bool   `json:"new"`
+	ToolSeverity string `json:"tool_severity,omitempty"`
+	Tool         string `json:"tool"`
+	Rule         string `json:"rule"`
+	Severity     string `json:"severity"`
+	Confidence   string `json:"confidence,omitempty"`
+	File         string `json:"file"`
+	Line         int    `json:"line"`
+	Column       int    `json:"column"`
+	Message      string `json:"message"`
+	Fingerprint  string `json:"fingerprint"`
+	New          bool   `json:"new"`
 }
 type Check struct {
 	PythonVersion string             `json:"python_version,omitempty"`

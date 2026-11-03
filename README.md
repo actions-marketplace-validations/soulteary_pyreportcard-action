@@ -160,7 +160,8 @@ clean files. Adding clean files cannot dilute an existing problem:
 This intentionally coarse score summarizes the worst category. The full report
 provides counts, rule IDs, positions, confidence and complexity metrics. Native
 tool suppressions are respected; grades should not rank repositories with
-different policies. Bandit warnings retain lower-confidence findings without
+different policies. Bandit records its original severity in `tool_severity`, separately from the
+normalized gate severity and confidence. Bandit warnings retain lower-confidence findings without
 presenting them as confirmed vulnerabilities. Ruff security rules are off by
 default to avoid duplicate checks.
 
