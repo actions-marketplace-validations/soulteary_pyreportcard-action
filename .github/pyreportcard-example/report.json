@@ -1,0 +1,98 @@
+{
+  "configuration": {
+    "mode": "typed",
+    "python": "python",
+    "project_python": "",
+    "target_version": "py311",
+    "exclude": [
+      ".git",
+      ".venv",
+      "venv",
+      "__pycache__",
+      ".mypy_cache",
+      ".ruff_cache",
+      "build",
+      "dist",
+      "vendor",
+      "third_party"
+    ],
+    "ruff_rules": [
+      "E4",
+      "E7",
+      "E9",
+      "F",
+      "B"
+    ],
+    "ruff_config": "",
+    "bandit_config": "",
+    "mypy_config": "",
+    "complexity_limit": 10,
+    "timeout_seconds": 120
+  },
+  "analysis_profile": "23f017825cdb45f5e027290315c566cf5e8f542f2174aa183559bf75212c1a6a",
+  "schema_version": 1,
+  "scoring_version": 1,
+  "mode": "typed",
+  "status": "passed",
+  "analysis_complete": true,
+  "grade": "A+",
+  "score": 100,
+  "files": 1,
+  "new_errors": 0,
+  "checks": [
+    {
+      "python_version": "3.11",
+      "tool": "ruff-lint",
+      "version": "0.14.3",
+      "status": "passed",
+      "analyzed": 1,
+      "total": 1,
+      "diagnostics": []
+    },
+    {
+      "python_version": "3.11",
+      "tool": "ruff-format",
+      "version": "0.14.3",
+      "status": "passed",
+      "analyzed": 1,
+      "total": 1,
+      "diagnostics": []
+    },
+    {
+      "python_version": "3.11",
+      "tool": "bandit",
+      "version": "1.8.6",
+      "status": "passed",
+      "analyzed": 1,
+      "total": 1,
+      "diagnostics": []
+    },
+    {
+      "python_version": "3.11",
+      "tool": "radon",
+      "version": "6.0.1",
+      "status": "passed",
+      "analyzed": 1,
+      "total": 1,
+      "diagnostics": [],
+      "metrics": {
+        "functions": 1,
+        "max_complexity": 1,
+        "over_limit": 0
+      }
+    },
+    {
+      "python_version": "3.11",
+      "tool": "mypy",
+      "version": "1.18.2",
+      "status": "passed",
+      "analyzed": 1,
+      "total": 1,
+      "diagnostics": [],
+      "metrics": {
+        "functions": 1,
+        "functions_with_return_annotations": 1
+      }
+    }
+  ]
+}
