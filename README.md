@@ -203,3 +203,12 @@ The CLI never installs the analyzed project or runs its test suite automatically
 Apache-2.0; see [LICENSE](LICENSE). Badge styling and the report shell are adapted
 from [Go Report Card](https://github.com/soulteary/goreportcard-action) and
 [C++ Report Card](https://github.com/soulteary/cppreportcard-action).
+
+## Unit-test coverage
+
+Run `scripts/test-coverage.sh` to execute the Go unit tests with the race detector
+and coverage instrumentation across all production Go packages, including the
+CLI. CI requires at least **95% total statement coverage**. The gate uses exact
+statement counts from `coverage.out`, not a rounded percentage, and does not
+exclude production files. Analyzer protocol tests use deterministic local
+processes; real-analyzer integration tests remain part of CI.

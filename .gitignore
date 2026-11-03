@@ -6,3 +6,6 @@
 **/.ruff_cache/
 **/.venv/
 *.pyc
+
+# Unit-test coverage profile
+/coverage.out
