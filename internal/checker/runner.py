@@ -63,7 +63,7 @@ def lint():
     error_rules = {"F821", "F822", "F823", "F831", "F701", "F702", "F704", "F706", "F707", "F722", "F901", "E999", "invalid-syntax"}
     for batch in batches(files):
         proc = run("ruff", ["check", "--no-fix", "--no-cache", "--output-format", "json",
-            "--select", ",".join(config["ruff_rules"]), *ruff_common(), *batch])
+            "--select", ",".join(config["ruff_rules"]), *ruff_common(), *[str(root / p) for p in batch]])
         data = json.loads(proc.stdout)
         if not isinstance(data, list) or (proc.returncode == 1 and not data):
             raise ValueError("invalid Ruff diagnostic response")
@@ -80,7 +80,7 @@ def lint():
 
 def formatting():
     for batch in batches(files):
-        proc = run("ruff", ["format", "--check", "--no-cache", *ruff_common(), *batch])
+        proc = run("ruff", ["format", "--check", "--no-cache", *ruff_common(), *[str(root / p) for p in batch]])
         changed = [line.removeprefix("Would reformat: ") for line in proc.stdout.splitlines()
                    if line.startswith("Would reformat: ")]
         if proc.returncode == 1 and not changed:
@@ -95,7 +95,7 @@ def security():
         args = ["-q", "-f", "json"]
         if config["bandit_config"]:
             args += ["-c", config["bandit_config"]]
-        proc = run("bandit", [*args, *batch])
+        proc = run("bandit", [*args, *[str(root / p) for p in batch]])
         data = json.loads(proc.stdout)
         if not isinstance(data.get("results"), list) or "metrics" not in data:
             raise ValueError("invalid Bandit response")
@@ -125,6 +125,8 @@ def complexity():
     for filename in files:
         with tokenize.open(root / filename) as stream:
             source = stream.read()
+        target_minor = int(config["target_version"][3:])
+        ast.parse(source, filename=filename, feature_version=(3, target_minor))
         seen = set()
         def visit(block):
             nonlocal count, maximum, over
@@ -160,7 +162,7 @@ def typing():
         args += ["--python-executable", config["project_python"]]
     version = config["target_version"].removeprefix("py")
     args += ["--python-version", f"{version[0]}.{version[1:]}"]
-    proc = run("mypy", [*args, *files])
+    proc = run("mypy", [*args, *[str(root / p) for p in files]])
     pattern = re.compile(r"^(.+?):(\d+):(\d+): (error|warning|note): (.*?)(?:  \[([^\]]+)\])?$")
     parsed_errors = 0
     for line in proc.stdout.splitlines():

@@ -1,0 +1,122 @@
+name: Python Report Card
+description: Generate Python quality reports and SVG badges with Ruff, Bandit, Radon and optional mypy.
+author: soulteary
+branding:
+  icon: award
+  color: blue
+inputs:
+  directory:
+    description: Project directory relative to the workspace.
+    required: false
+    default: '.'
+  mode:
+    description: Analysis mode (standard or typed).
+    required: false
+    default: standard
+  python_version:
+    description: Python version used for isolated analyzer tools (3.11 or newer).
+    required: false
+    default: '3.11'
+  target_version:
+    description: Target Python syntax version, such as py311.
+    required: false
+    default: py311
+  project_python:
+    description: Optional Python executable with project dependencies for mypy.
+    required: false
+    default: ''
+  config:
+    description: Optional JSON configuration relative to the project directory.
+    required: false
+    default: ''
+  output_dir:
+    description: Output directory relative to the project directory.
+    required: false
+    default: .pyreportcard
+  baseline:
+    description: Optional previous report.json relative to the project directory.
+    required: false
+    default: ''
+  fail_on:
+    description: Policy (none, errors, new-errors, findings).
+    required: false
+    default: new-errors
+  threshold:
+    description: Minimum score; 0 disables score gate.
+    required: false
+    default: '0'
+  commit:
+    description: Commit generated reports on branch push events only.
+    required: false
+    default: 'false'
+outputs:
+  status:
+    description: passed, findings, or incomplete.
+    value: ${{ steps.analyze.outputs.status }}
+  grade:
+    description: Overall grade, or incomplete.
+    value: ${{ steps.analyze.outputs.grade }}
+  score:
+    description: Score, or empty for incomplete analysis.
+    value: ${{ steps.analyze.outputs.score }}
+  analysis_complete:
+    description: Whether all required analyzers completed.
+    value: ${{ steps.analyze.outputs.analysis_complete }}
+  new_errors:
+    description: Number of new error diagnostics.
+    value: ${{ steps.analyze.outputs.new_errors }}
+  report:
+    description: Absolute Markdown report path.
+    value: ${{ steps.analyze.outputs.report }}
+  json:
+    description: Absolute JSON report path.
+    value: ${{ steps.analyze.outputs.json }}
+  badge:
+    description: Absolute SVG badge path.
+    value: ${{ steps.analyze.outputs.badge }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+      with:
+        go-version-file: ${{ github.action_path }}/go.mod
+        cache: false
+    - name: Set up analyzer Python
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+      with:
+        python-version: ${{ inputs.python_version }}
+    - name: Install isolated analyzers
+      id: tools
+      shell: bash
+      run: '"$GITHUB_ACTION_PATH/scripts/install-tools.sh"'
+    - name: Build CLI
+      shell: bash
+      run: |
+        cd "$GITHUB_ACTION_PATH"
+        go build -trimpath -o "$RUNNER_TEMP/pyreportcard-cli" ./cmd/pyreportcard-cli
+    - name: Analyze
+      id: analyze
+      shell: bash
+      env:
+        INPUT_DIRECTORY: ${{ inputs.directory }}
+        INPUT_MODE: ${{ inputs.mode }}
+        INPUT_PROJECT_PYTHON: ${{ inputs.project_python }}
+        INPUT_TARGET_VERSION: ${{ inputs.target_version }}
+        TOOL_PYTHON: ${{ steps.tools.outputs.python }}
+        INPUT_CONFIG: ${{ inputs.config }}
+        INPUT_OUTPUT_DIR: ${{ inputs.output_dir }}
+        INPUT_BASELINE: ${{ inputs.baseline }}
+        INPUT_FAIL_ON: ${{ inputs.fail_on }}
+        INPUT_THRESHOLD: ${{ inputs.threshold }}
+      run: '"$GITHUB_ACTION_PATH/scripts/analyze.sh"'
+    - name: Commit reports
+      if: inputs.commit == 'true'
+      shell: bash
+      env:
+        REPORT_JSON: ${{ steps.analyze.outputs.json }}
+      run: '"$GITHUB_ACTION_PATH/scripts/commit.sh"'
+    - name: Enforce policy
+      shell: bash
+      env:
+        RESULT_CODE: ${{ steps.analyze.outputs.exit_code }}
+      run: 'exit "$RESULT_CODE"'

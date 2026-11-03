@@ -1,0 +1,13 @@
+{
+  "mode": "standard",
+  "python": "python3",
+  "project_python": "",
+  "target_version": "py311",
+  "exclude": [".git", ".venv", "venv", "__pycache__", ".mypy_cache", ".ruff_cache", "build", "dist", "vendor", "third_party"],
+  "ruff_rules": ["E4", "E7", "E9", "F", "B"],
+  "ruff_config": "",
+  "bandit_config": "",
+  "mypy_config": "",
+  "complexity_limit": 10,
+  "timeout_seconds": 120
+}

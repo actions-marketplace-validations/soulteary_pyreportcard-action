@@ -1,0 +1,19 @@
+name: Python Report Card
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  report:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: soulteary/pyreportcard-action@v1
+        with:
+          mode: standard
+          fail_on: new-errors
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pyreportcard
+          path: .pyreportcard/
+          include-hidden-files: true

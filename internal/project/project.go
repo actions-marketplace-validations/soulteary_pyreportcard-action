@@ -59,6 +59,9 @@ func Discover(root string, exclude []string) ([]string, error) {
 			return nil
 		}
 		if !d.IsDir() && filepath.Ext(p) == ".py" {
+			if strings.ContainsAny(rel, "\n\r") {
+				return fmt.Errorf("unsupported newline in source path: %q", rel)
+			}
 			out = append(out, rel)
 		}
 		return nil
