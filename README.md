@@ -1,9 +1,6 @@
 # Python Report Card
 
-[![Go Report Card](.github/goreportcard.svg)](.github/goreportcard-report.md)
-
-[![Python Report Card example](.github/pyreportcard-example/badge.svg)](.github/pyreportcard-example/report.md)
-[![CI](https://github.com/soulteary/pyreportcard-action/actions/workflows/ci.yml/badge.svg)](https://github.com/soulteary/pyreportcard-action/actions/workflows/ci.yml)
+[![Python Report Card example](.github/pyreportcard-example/badge.svg)](.github/pyreportcard-example/report.md) [![Go Report Card](.github/goreportcard.svg)](.github/goreportcard-report.md) [![CI](https://github.com/soulteary/pyreportcard-action/actions/workflows/ci.yml/badge.svg)](https://github.com/soulteary/pyreportcard-action/actions/workflows/ci.yml)
 
 Generate local Python quality reports with **Ruff, Bandit, Radon and optional
 mypy**. A Go CLI and GitHub Action produce JSON, Markdown and a self-contained SVG
