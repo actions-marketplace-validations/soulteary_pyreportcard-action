@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/soulteary/pyreportcard-action/internal/model"
@@ -36,12 +37,23 @@ func Markdown(r model.Result) string {
 		if c.Error != "" {
 			fmt.Fprintf(&b, "%s\n\n", escape(c.Error))
 		}
+		if len(c.Metrics) > 0 {
+			keys := make([]string, 0, len(c.Metrics))
+			for key := range c.Metrics {
+				keys = append(keys, key)
+			}
+			sort.Strings(keys)
+			for _, key := range keys {
+				fmt.Fprintf(&b, "- %s: %.0f\n", escape(key), c.Metrics[key])
+			}
+			b.WriteString("\n")
+		}
 		if len(c.Diagnostics) == 0 {
 			continue
 		}
-		b.WriteString("| File | Line | Severity | Rule | New | Message |\n| --- | --- | --- | --- | --- | --- |\n")
+		b.WriteString("| File | Line | Severity | Confidence | Rule | New | Message |\n| --- | --- | --- | --- | --- | --- | --- |\n")
 		for _, d := range c.Diagnostics {
-			fmt.Fprintf(&b, "| %s | %d | %s | %s | %t | %s |\n", escape(d.File), d.Line, d.Severity, escape(d.Rule), d.New, escape(d.Message))
+			fmt.Fprintf(&b, "| %s | %d | %s | %s | %s | %t | %s |\n", escape(d.File), d.Line, d.Severity, escape(d.Confidence), escape(d.Rule), d.New, escape(d.Message))
 		}
 	}
 	return b.String()
