@@ -27,6 +27,10 @@ with tempfile.TemporaryDirectory() as directory:
     report = check(mode="typed")
     assert report["grade"] == "A+" and report["analysis_complete"], report
     assert len(report["checks"]) == 5
+    # Both ends of the public target range must work with the installed mypy.
+    for target in ("py39", "py314"):
+        report = check(mode="typed", extra=("--target-version", target))
+        assert report["grade"] == "A+" and report["analysis_complete"], (target, report)
     source.write_text('"""A defect."""\n\nvalue = missing\n')
     report = check(1)
     assert report["new_errors"] == 1 and report["score"] == 59, report

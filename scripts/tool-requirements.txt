@@ -1,5 +1,5 @@
 # Validated analyzer versions; transitive versions are captured in reports as relevant.
-ruff==0.14.3
-bandit==1.8.6
+ruff==0.17.6
+bandit==1.9.4
 radon==6.0.1
-mypy==1.18.2
+mypy==1.20.2

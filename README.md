@@ -93,10 +93,12 @@ pyreportcard-cli --python .venv-tools/bin/python --json
 ```
 
 The requirements file is in this repository; when using a downloaded CLI without
-a checkout, install `ruff==0.14.3 bandit==1.8.6 radon==6.0.1 mypy==1.18.2` into your
+a checkout, install `ruff==0.17.6 bandit==1.9.4 radon==6.0.1 mypy==1.20.2` into your
 tool environment. These are tested versions, not claims about the latest releases.
 Transitive dependencies are resolved by pip; full dependency locking is the
 caller's responsibility. Reports record analyzer and Python runtime versions.
+Mypy 1.20.2 preserves typed analysis for the supported Python 3.9 target;
+mypy 2 requires a source target of Python 3.10 or later.
 
 `--python` paths containing a slash are relative to `--directory`, not the caller's
 working directory. Bare executable names resolve through PATH. On Windows use
