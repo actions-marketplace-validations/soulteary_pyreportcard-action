@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.5] - 2026-11-26
+
+- Deliver the Ruff JSON formatting compatibility and analyzer updates listed below.
+- Fix the release caller permission ceiling required by reusable CI.
+- Add a manual validation-only run from a branch before creating an immutable tag.
+
+The v1.0.4 tag is retained unchanged. Its release workflow failed at startup
+and no v1.0.4 CLI distribution was published.
+
 ## [1.0.4] - 2026-11-26
 
 Adapt Ruff formatting analysis to the pinned analyzer's structured JSON output.
@@ -13,7 +22,6 @@ Report findings and grades can change with the analyzer updates. The Action inte
 
 The release workflow reruns full CI and builds checksummed archives. Marketplace enrollment/categories are separate from GitHub Release publication.
 
-# Changelog
 
 ## 1.0.3
 

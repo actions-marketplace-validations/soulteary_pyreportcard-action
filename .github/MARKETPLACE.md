@@ -7,6 +7,9 @@ name is **Python Report Card**, with an `award` icon on a blue background.
 ## Prepare a release
 
 1. Merge the desired changes and confirm the default-branch CI passes.
+   Run the Release workflow manually from `main` and confirm its validation
+   jobs pass before creating a new tag. Branch dispatches validate only: the
+   archive/draft job runs only for a tag.
 2. Create and push a new immutable version tag, for example:
 
    ```sh
