@@ -80,12 +80,14 @@ def lint():
 
 def formatting():
     for batch in batches(files):
-        proc = run("ruff", ["format", "--check", "--no-cache", *ruff_common(), *[str(root / p) for p in batch]])
-        changed = [line.removeprefix("Would reformat: ") for line in proc.stdout.splitlines()
-                   if line.startswith("Would reformat: ")]
-        if proc.returncode == 1 and not changed:
-            raise ValueError("Ruff format failed without a file list")
-        for path in changed:
+        proc = run("ruff", ["format", "--check", "--no-cache", "--output-format", "json",
+            *ruff_common(), *[str(root / p) for p in batch]])
+        data = json.loads(proc.stdout)
+        if not isinstance(data, list) or (proc.returncode == 1 and not data):
+            raise ValueError("invalid Ruff formatting response")
+        if any(item.get("code") != "unformatted" for item in data):
+            raise ValueError("Ruff could not complete formatting analysis")
+        for path in dict.fromkeys(item["filename"] for item in data):
             finding("format", "warning", path, 1, 1, "File differs from configured Ruff format")
         result["analyzed"] += len(batch)
 
