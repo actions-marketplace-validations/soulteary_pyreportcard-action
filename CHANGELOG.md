@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.0.4] - 2026-11-26
+
+Adapt Ruff formatting analysis to the pinned analyzer's structured JSON output.
+
+- Parse `ruff format --check --output-format json` diagnostics instead of matching human-readable output lines.
+- Reject incomplete or unexpected formatting responses instead of presenting a complete quality grade.
+- Update pinned Ruff, Bandit and mypy versions; exercise both ends of the supported target syntax range in integration tests.
+- Refresh setup Actions used by the composite Action.
+
+Report findings and grades can change with the analyzer updates. The Action interface is unchanged. Use the exact tag or commit for reproducibility. The six platform CLI archives require the supported Python runtime and analyzer tools documented in README; they do not bundle Python.
+
+The release workflow reruns full CI and builds checksummed archives. Marketplace enrollment/categories are separate from GitHub Release publication.
+
+# Changelog
+
 ## 1.0.3
 
 - Raise total Go statement coverage to 97.42% with deterministic unit tests for success, failure and boundary cases.
